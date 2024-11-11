@@ -1,16 +1,18 @@
-import { computed, reactive, readonly } from 'vue';
+import { computed, reactive } from 'vue';
+import { defineStore, acceptHMRUpdate } from 'pinia';
 
 interface IItemState {
   items: string[];
   filterStr: string;
 }
 
-const ItemState = reactive<IItemState>({
-  items: ['Task', 'Task2', 'Task3'],
-  filterStr: ''
-});
 
-export function useTasks() {
+export const useTaskStore = defineStore('TaskStore', () => {
+  const ItemState = reactive<IItemState>({
+    items: ['Task', 'Task2', 'Task3'],
+    filterStr: ''
+  });
+
   const filteredItems = computed(() => {
     return ItemState.items.filter((item) => item.includes(ItemState.filterStr));
   });
@@ -28,12 +30,15 @@ export function useTasks() {
     ItemState.filterStr = filter;
   }
 
-  return {
-    ItemState: readonly(ItemState),
-    items: readonly(ItemState.items),
-    addItem,
-    removeItem,
-    filteredItems,
-    setFilter
-  };
+ return {
+  ItemState,
+  filteredItems,
+  addItem,
+  removeItem,
+  setFilter
+ }
+})
+
+if (import.meta.hot) {
+ import.meta.hot.accept(acceptHMRUpdate(useTaskStore, import.meta.hot))
 }

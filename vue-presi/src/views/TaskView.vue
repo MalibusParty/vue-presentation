@@ -1,12 +1,12 @@
 <template>
-  <div class="mx-auto flex w-[400px] flex-col gap-2 rounded-lg bg-white p-2 shadow-dark">
-    <h3 class="w-full border-b-2 border-solid border-b-black text-center">Tasks</h3>
+  <div class="view-container">
+    <h3 class="task-text task-header">Tasks</h3>
     <input
       v-model="filter"
-      class="w-full rounded-full border-2 border-solid border-gray-700 px-4 py-1"
+      class="task-text task-filter"
       placeholder="Filter Tasks"
     />
-    <TaskList :array="filteredItems" />
+    <TaskList :array="taskStore.filteredItems" />
     <ItemInput />
   </div>
 </template>
@@ -14,10 +14,11 @@
 <script setup lang="ts">
 import TaskList from '@/components/TaskList.vue';
 import { ref, watch } from 'vue';
-import { useTasks } from '@/stores/TaskStore';
+import { useTaskStore } from '@/stores/TaskStore';
 import ItemInput from '@/components/ItemInput.vue';
 
-const { setFilter, filteredItems } = useTasks();
+const taskStore = useTaskStore();
+const { setFilter } = taskStore;
 const filter = ref('');
 
 watch(
@@ -25,3 +26,36 @@ watch(
   () => setFilter(filter.value)
 );
 </script>
+
+<style scoped>
+.view-container {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  width: 400px;
+  background-color: white;
+  padding: 0.5rem;
+  box-shadow: 0px 0px 6px 6px rgba(0, 0, 0, 0.1);
+}
+
+.task-text {
+  width: 100%;
+  border-style: solid;
+}
+
+.task-header {
+  border-bottom-width: 2px;
+  border-bottom-color: black;
+  text-align: center;
+}
+
+.task-filter {
+  border-width: 2px;
+  border-color: #374151;
+  border-radius: 100px;
+  padding: 0.25rem 1rem;
+}
+</style>

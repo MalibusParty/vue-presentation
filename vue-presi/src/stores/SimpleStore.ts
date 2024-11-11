@@ -1,4 +1,5 @@
-import { reactive, readonly } from "vue"
+import { reactive } from "vue"
+import { defineStore, acceptHMRUpdate } from 'pinia'
 
 interface IExample {
     text: string,
@@ -6,20 +7,24 @@ interface IExample {
     numbers: number[]
 }
 
-export function useExample() {
 
-    const exampleState = reactive<IExample>({
-        text: "Ein Beispiel",
-        isValid: true,
-        numbers: [1,2,3,4,5]
-    });
+export const useSimpleStore = defineStore('SimpleStore', () => {
+  const exampleState = reactive<IExample>({
+    text: "Ein Beispiel",
+    isValid: true,
+    numbers: [1,2,3,4,5]
+  });
 
-    function setExample(text: string) {
-        exampleState.text = text
-    }
+  function setExample(text: string) {
+    exampleState.text = text
+  }
 
-    return {
-        exampleState: readonly(exampleState),
-        setExample
-    }
+ return {
+  exampleState,
+  setExample
+ }
+})
+
+if (import.meta.hot) {
+ import.meta.hot.accept(acceptHMRUpdate(useSimpleStore, import.meta.hot))
 }

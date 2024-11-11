@@ -7,10 +7,13 @@
 </template>
 
 <script setup lang="ts">
-import { useExample } from '@/stores/SimpleStore';
+import { useSimpleStore } from '@/stores/SimpleStore';
+import { storeToRefs } from 'pinia';
 import { onMounted, onUnmounted, ref } from 'vue';
 
-const { exampleState, setExample } = useExample();
+const simpleStore = useSimpleStore();
+const { exampleState } = storeToRefs(simpleStore)
+const { setExample } = simpleStore;
 
 onMounted(() => {
   setExample("Anderes Beispiel");

@@ -11,9 +11,10 @@
 </template>
 
 <script setup lang="ts">
-import { useTasks } from '@/stores/TaskStore';
+import { useTaskStore } from '@/stores/TaskStore';
 
-const { removeItem } = useTasks();
+const taskStore = useTaskStore()
+const { removeItem } = taskStore;
 
 defineProps<{
   itemText: string;

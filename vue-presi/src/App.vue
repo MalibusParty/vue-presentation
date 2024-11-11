@@ -21,18 +21,18 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router';
 import StyledRouterLink from './components/StyledRouterLink.vue';
-import { useTasks } from '@/stores/TaskStore';
+import { useTaskStore } from '@/stores/TaskStore';
 import Popup from '@/components/Popup.vue';
 import { ref, watch } from 'vue';
 
-const { items } = useTasks();
+const taskStore = useTaskStore();
 const isPopupOpen = ref(false);
 const route = useRoute();
 
 watch(route, () => checkTasks());
 
 function checkTasks() {
-  if (items.length > 0) {
+  if (taskStore.ItemState.items.length > 0) {
     isPopupOpen.value = true;
   }
 }
